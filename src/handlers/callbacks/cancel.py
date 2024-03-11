@@ -1,15 +1,16 @@
-from aiogram import Router, types
-from aiogram.filters import CommandStart
+from aiogram import Router, F, types
+from aiogram.fsm.context import FSMContext
 
-from src.infrastructure.database.dao import HolderDao
 from src.keyboards.default import main_menu_keyboard
 
 router = Router()
 
 
-@router.message(CommandStart())
-async def on_cmd_start(message: types.Message, dao: HolderDao):
-    await message.answer(
+@router.callback_query(F.data == "cancel_actions")
+async def cancel(callback: types.CallbackQuery, state: FSMContext):
+    await state.clear()
+    await callback.message.delete()
+    await callback.message.answer(
         text=(
             "Буюртмангиз ўлчамлари ва тираж сонини киритиб, "
             "сотув менежерига мурожаат қилмасдан буюртма нархини ҳисоблашингиз мумкин.\n\n"
