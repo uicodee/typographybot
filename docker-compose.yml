@@ -1,0 +1,8 @@
+version: '3'
+services:
+  tgbot:
+    network_mode: host
+    build: .
+    command: poetry run python main.py
+    restart: always
+    container_name: "budgetlibot"
